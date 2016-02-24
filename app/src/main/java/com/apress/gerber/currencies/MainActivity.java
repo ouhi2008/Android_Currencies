@@ -79,6 +79,14 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         return true;
     }
 
+    private int findPositionGivenCode(String code,String[] currencies){
+        for(int i=0;i<currencies.length;i++){
+            if((currencies[i]).substring(0,3).equalsIgnoreCase(code)){
+                return i;
+            }
+        }
+        return 0;
+    }
     public boolean isOnline() {
         ConnectivityManager cm =
                 (ConnectivityManager)
@@ -105,6 +113,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         mConvertedTextView.setText("");
     }
 
+
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         switch (parent.getId()){
@@ -121,4 +130,6 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     public void onNothingSelected(AdapterView<?> parent) {
 
     }
+
+
 }
