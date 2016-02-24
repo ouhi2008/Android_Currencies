@@ -28,6 +28,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     private EditText mAmountEditText;
     private Spinner mForSpinner, mHomSpinner;
     private String[] mCurrencies;
+    public static final String FOR = "FOR_CURRENCY";
+    public static final String HOM = "HOM_CURRENCY";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,23 +39,34 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         setSupportActionBar(toolbar);
 
         //unpack ArrayList from the bundle and convert to array
-        ArrayList<String> arrayList=((ArrayList<String>)getIntent().getSerializableExtra(SplashActivity.KEY_ARRAYLIST));
+        ArrayList<String> arrayList = ((ArrayList<String>) getIntent().getSerializableExtra(SplashActivity.KEY_ARRAYLIST));
         Collections.sort(arrayList);
         mCurrencies = arrayList.toArray(new String[arrayList.size()]);
 
-        mConvertedTextView=(TextView)findViewById(R.id.txt_converted);
-        mAmountEditText=(EditText)findViewById(R.id.edt_amount);
-        mCalcButton=(Button)findViewById(R.id.btn_calc);
-        mForSpinner=(Spinner)findViewById(R.id.spn_for);
-        mHomSpinner =(Spinner)findViewById(R.id.spn_hom);
+        mConvertedTextView = (TextView) findViewById(R.id.txt_converted);
+        mAmountEditText = (EditText) findViewById(R.id.edt_amount);
+        mCalcButton = (Button) findViewById(R.id.btn_calc);
+        mForSpinner = (Spinner) findViewById(R.id.spn_for);
+        mHomSpinner = (Spinner) findViewById(R.id.spn_hom);
 
-        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this,R.layout.spinner_closed,mCurrencies);
+        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this, R.layout.spinner_closed, mCurrencies);
         arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mHomSpinner.setAdapter(arrayAdapter);
         mForSpinner.setAdapter(arrayAdapter);
 
         mHomSpinner.setOnItemSelectedListener(this);
         mForSpinner.setOnItemSelectedListener(this);
+
+        if(savedInstanceState==null && (PrefsMgr.getString(this,FOR)==null && PrefsMgr.getString(this,HOM)==null)){
+            mForSpinner.setSelection(findPositionGivenCode("CNY",mCurrencies));
+            mHomSpinner.setSelection(findPositionGivenCode("USD",mCurrencies));
+            PrefsMgr.setString(this, FOR, "CNY");
+            PrefsMgr.setString(this,HOM,"USD");
+        }else{
+            mForSpinner.setSelection(findPositionGivenCode(PrefsMgr.getString(this,FOR),mCurrencies));
+            mHomSpinner.setSelection(findPositionGivenCode(PrefsMgr.getString(this,HOM),mCurrencies));
+
+        }
     }
 
     @Override
@@ -66,7 +79,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        switch (id){
+        switch (id) {
             case R.id.mnu_invert:
                 invertCurrencies();
                 break;
@@ -79,9 +92,9 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         return true;
     }
 
-    private int findPositionGivenCode(String code,String[] currencies){
-        for(int i=0;i<currencies.length;i++){
-            if(extractCodeFromCurrency(currencies[i]).equalsIgnoreCase(code)){
+    private int findPositionGivenCode(String code, String[] currencies) {
+        for (int i = 0; i < currencies.length; i++) {
+            if (extractCodeFromCurrency(currencies[i]).equalsIgnoreCase(code)) {
                 return i;
             }
         }
@@ -89,7 +102,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     }
 
     private String extractCodeFromCurrency(String currency) {
-        return (currency).substring(0,3);
+        return (currency).substring(0, 3);
     }
 
     public boolean isOnline() {
@@ -102,6 +115,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         }
         return false;
     }
+
     private void launchBrowser(String strUri) {
         if (isOnline()) {
             Uri uri = Uri.parse(strUri);
@@ -110,25 +124,32 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             startActivity(intent);
         }
     }
+
     private void invertCurrencies() {
         int nFor = mForSpinner.getSelectedItemPosition();
         int nHom = mHomSpinner.getSelectedItemPosition();
         mForSpinner.setSelection(nHom);
         mHomSpinner.setSelection(nFor);
         mConvertedTextView.setText("");
+
+        PrefsMgr.setString(this, FOR, extractCodeFromCurrency((String) mForSpinner.getSelectedItem()));
+        PrefsMgr.setString(this, HOM,extractCodeFromCurrency((String) mHomSpinner.getSelectedItem()));
     }
 
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-        switch (parent.getId()){
+        switch (parent.getId()) {
             case R.id.spn_for:
+                PrefsMgr.setString(this,FOR,extractCodeFromCurrency((String) mForSpinner.getSelectedItem()));
                 break;
             case R.id.spn_hom:
+                PrefsMgr.setString(this,HOM,extractCodeFromCurrency((String) mHomSpinner.getSelectedItem()));
                 break;
             default:
                 break;
         }
+        mConvertedTextView.setText("");
     }
 
     @Override
