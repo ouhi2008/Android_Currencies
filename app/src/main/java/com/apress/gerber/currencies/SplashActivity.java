@@ -42,7 +42,7 @@ public class SplashActivity extends Activity {
                     throw new JSONException("no data available.");
                 }
                 Iterator iterator = jsonObject.keys();
-                String key = "";
+                String key;
                 mCurrencies = new ArrayList<String>();
                 while (iterator.hasNext()) {
                     key = (String)iterator.next();

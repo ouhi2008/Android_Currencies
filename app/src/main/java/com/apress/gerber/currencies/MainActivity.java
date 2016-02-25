@@ -99,7 +99,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             @Override
             public void onClick(View v) {
                 if(isNumeric(String.valueOf(mAmountEditText.getText()))) {
-                    new CurrencyConverterTask().execute(URL_BASE + mKey);
+                   new CurrencyConverterTask().execute(URL_BASE + mKey);
                 }else{
                     Toast.makeText(MainActivity.this,"Not a numeric value, try again.",Toast.LENGTH_LONG).show();
                 }
@@ -277,7 +277,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
     //create for instrumentation testing with threads
     private CurrencyTaskCallBack mCurrencyTaskCallBack;
-    public static interface CurrencyTaskCallBack{
+    public interface CurrencyTaskCallBack{
         void executionDone();
     }
     public void setCurrencyTaskCallBack(CurrencyTaskCallBack currencyTaskCallBack){
@@ -286,7 +286,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
     public static boolean isNumeric(String str){
         try{
-            double dub = Double.parseDouble(str);
+            Double.parseDouble(str);
         }catch(NumberFormatException nfe){
             return false;
         }

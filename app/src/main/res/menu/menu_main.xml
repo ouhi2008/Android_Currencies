@@ -5,15 +5,15 @@
     <item
         android:id="@+id/mnu_codes"
         android:orderInCategory="100"
-        android:title="search active codes"
+        android:title="@string/search_active_codes"
         app:showAsAction="never"/>
     <item android:id="@+id/mnu_invert"
           android:orderInCategory="200"
           app:showAsAction="never"
-          android:title="invert codes" />
+          android:title="@string/invert_codes" />
     <item android:id="@+id/mnu_exit"
           android:orderInCategory="300"
           app:showAsAction="never"
-          android:title="exit" />
+          android:title="@string/exit" />
 
 </menu>
