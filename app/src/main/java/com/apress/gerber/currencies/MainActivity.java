@@ -276,7 +276,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     public static interface CurrencyTaskCallBack{
         void executionDone();
     }
-    public void setCurrencyConverterTask(CurrencyTaskCallBack currencyTaskCallBack){
+    public void setCurrencyTaskCallBack(CurrencyTaskCallBack currencyTaskCallBack){
         this.mCurrencyTaskCallBack = currencyTaskCallBack;
     }
 }
