@@ -263,6 +263,20 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             }
             mConvertedTextView.setText(DECIMAL_FORMAT.format(dCalculated) + " " + strHomCode);
             progressDialog.dismiss();
+
+            //for testing
+            if(mCurrencyTaskCallBack!=null){
+                mCurrencyTaskCallBack.executionDone();
+            }
         }
+    }
+
+    //create for instrumentation testing with threads
+    private CurrencyTaskCallBack mCurrencyTaskCallBack;
+    public static interface CurrencyTaskCallBack{
+        void executionDone();
+    }
+    public void setCurrencyConverterTask(CurrencyTaskCallBack currencyTaskCallBack){
+        this.mCurrencyTaskCallBack = currencyTaskCallBack;
     }
 }

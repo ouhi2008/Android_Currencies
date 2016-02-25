@@ -1,10 +1,13 @@
 package com.apress.gerber.currencies;
 
+import android.content.Intent;
 import android.test.ActivityInstrumentationTestCase2;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
+
+import java.util.ArrayList;
 
 /**
  * Created by fwang5 on 2/25/2016.
@@ -24,6 +27,13 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActiv
     @Override
     public void setUp() throws Exception {
         super.setUp();
+        ArrayList<String> bogusCurrencies = new ArrayList<String>();
+        bogusCurrencies.add("USD|United State Dollar");
+        bogusCurrencies.add("EUR|Euro");
+        Intent intent = new Intent();
+        intent.putExtra(SplashActivity.KEY_ARRAYLIST,bogusCurrencies);
+        setActivityIntent(intent);
+
         mActivity = getActivity();
         mConvertedTextView = (TextView) mActivity.findViewById(R.id.txt_converted);
         mAmountEditText = (EditText) mActivity.findViewById(R.id.edt_amount);
