@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.AssetManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -56,6 +57,15 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        //-------------use count---------------------------------------------------------
+        SharedPreferences preferences = getSharedPreferences("use_count", MODE_WORLD_READABLE);
+        int count = preferences.getInt("count",0);
+        //Toast.makeText(this,"App is used "+count+" times.", Toast.LENGTH_LONG);
+
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putInt("count",++count);
+        editor.commit();
+        //----------------------------------------------------------------------
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
